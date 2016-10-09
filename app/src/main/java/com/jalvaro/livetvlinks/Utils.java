@@ -10,9 +10,13 @@ import java.util.List;
  * Created by jordi on 2/10/16.
  */
 public class Utils {
-    public static boolean refresh(Calendar lastUpdate) {
+    public static final String LIVETV_BASE_URL = "http://livetv.sx/";
+    public static final String LIVETV_URL = LIVETV_BASE_URL + "es/";
+    private static final int MINUTES = 5;
+
+    public static boolean needsTobeRefreshed(Calendar lastUpdate) {
         Calendar someMinutesAgo = Calendar.getInstance();
-        someMinutesAgo.add(Calendar.MINUTE, -5);
+        someMinutesAgo.add(Calendar.MINUTE, -MINUTES);
 
         return lastUpdate == null || lastUpdate.before(someMinutesAgo);
     }

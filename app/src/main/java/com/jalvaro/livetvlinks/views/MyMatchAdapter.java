@@ -1,13 +1,11 @@
 package com.jalvaro.livetvlinks.views;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.jalvaro.livetvlinks.R;
 import com.jalvaro.livetvlinks.models.Match;
@@ -19,16 +17,29 @@ import static com.jalvaro.livetvlinks.views.MatchActivity.MATCH_EXTRA;
 /**
  * Created by jordi on 2/10/16.
  */
-class MyMatchAdapter extends ArrayAdapter<Match> {
-    private int resource;
+class MyMatchAdapter extends BaseAdapter{
+    private Activity context;
     private List<Match> matches;
 
-    MyMatchAdapter(Context context, int resource, @NonNull List<Match> matches) {
-        super(context, resource, matches);
-        this.resource = resource;
+    MyMatchAdapter(Activity context, @NonNull List<Match> matches) {
+        this.context = context;
         this.matches = matches;
     }
 
+    @Override
+    public int getCount() {
+        return matches.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return matches.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
     @Override
     public View getView(final int position,
@@ -37,8 +48,8 @@ class MyMatchAdapter extends ArrayAdapter<Match> {
 
         // Inflate only once
         if(convertView == null) {
-            convertView = ((Activity) getContext()).getLayoutInflater()
-                    .inflate(resource, null, false);
+            convertView = context.getLayoutInflater()
+                    .inflate(R.layout.layout_item, null, false);
         }
 
         Match match = matches.get(position);
@@ -57,8 +68,12 @@ class MyMatchAdapter extends ArrayAdapter<Match> {
     }
 
     private void onClickItem(int position) {
-        Intent intent = new Intent(getContext(), MatchActivity.class);
+        Intent intent = new Intent(context, MatchActivity.class);
         intent.putExtra(MATCH_EXTRA, matches.get(position));
-        getContext().startActivity(intent);
+        context.startActivity(intent);
+    }
+
+    void setMatches(List<Match> matches) {
+        this.matches = matches;
     }
 }

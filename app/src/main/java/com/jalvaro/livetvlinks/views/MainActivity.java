@@ -3,18 +3,22 @@ package com.jalvaro.livetvlinks.views;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
-import com.jalvaro.livetvlinks.models.Match;
 import com.jalvaro.livetvlinks.R;
 import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
+import com.jalvaro.livetvlinks.models.Match;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.jalvaro.livetvlinks.Utils.LIVETV_URL;
 
 public class MainActivity extends AppCompatActivity {
     private ListView list;
     private MyMatchAdapter adapter;
     private Calendar lastUpdate;
+    private boolean test;
 
     /**
      * TODO:
@@ -23,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
      * Obtenir la web en el Locale del mòbil
      * Controlar si els links amagats es mostren
      * Strings en idiomes
-     * Que es pugui copiar el link
+     * Que es pugui copiar els links de sopcast, acestream...
      * Visualment més agradable
      *
      * @param savedInstanceState
@@ -41,20 +45,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(Utils.refresh(lastUpdate)) {
+        if(Utils.needsTobeRefreshed(lastUpdate)) {
             lastUpdate = Calendar.getInstance();
-            UrlDataFetcher.fetchFromUrl("http://livetv.sx/es/", new BaseUrlCallback());
+            UrlDataFetcher.fetchFromUrl(LIVETV_URL, new BaseUrlCallback());
         }
     }
 
     private void showMatches(List<Match> matches) {
         if (adapter == null) {
-            adapter = new MyMatchAdapter(this, R.layout.layout_item, matches);
+            adapter = new MyMatchAdapter(this, matches);
+            list.setAdapter(adapter);
         } else {
-            //TODO: update
+            adapter.setMatches(matches);
+            adapter.notifyDataSetChanged();
         }
-
-        list.setAdapter(adapter);
     }
 
     private class BaseUrlCallback implements UrlCallback {
