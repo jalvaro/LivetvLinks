@@ -3,6 +3,7 @@ package com.jalvaro.livetvlinks.views;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.jalvaro.livetvlinks.R;
 import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
@@ -61,11 +62,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void showError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
     private class BaseUrlCallback implements UrlCallback {
 
         @Override
         public void processHtml(String html) {
             showMatches(UrlDataFetcher.parseBaseHtml(html));
+        }
+
+        @Override
+        public void processError(String error) {
+            showError(error);
         }
     }
 }

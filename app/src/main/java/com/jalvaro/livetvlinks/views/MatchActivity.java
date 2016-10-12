@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.jalvaro.livetvlinks.R;
 import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
@@ -55,7 +56,10 @@ public class MatchActivity extends AppCompatActivity {
         } else {
             //TODO: update
         }
+    }
 
+    private void showError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
 
@@ -71,6 +75,11 @@ public class MatchActivity extends AppCompatActivity {
             }
 
             showMatchLinks();
+        }
+
+        @Override
+        public void processError(String error) {
+            showError(error);
         }
     }
 }

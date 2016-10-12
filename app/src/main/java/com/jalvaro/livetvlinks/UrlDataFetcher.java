@@ -10,11 +10,8 @@ import org.jsoup.select.Elements;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-import java.io.IOException;
-import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +37,18 @@ public class UrlDataFetcher {
         observable
                 .subscribeOn(Schedulers.newThread()) // Create a new Thread
                 .observeOn(AndroidSchedulers.mainThread()) // Use the UI thread
-                .subscribe(new Action1<String>() {
+                .subscribe(new Subscriber<String>() {
                     @Override
-                    public void call(String html) {
+                    public void onNext(String html) {
                         urlCallback.processHtml(html);
+                    }
+
+                    @Override
+                    public void onCompleted() { }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        urlCallback.processError("Error de la web livetv.sx ");
                     }
                 });
     }
