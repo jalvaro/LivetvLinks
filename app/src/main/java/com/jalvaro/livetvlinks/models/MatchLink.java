@@ -4,17 +4,37 @@ package com.jalvaro.livetvlinks.models;
  * Created by jordi on 30/9/16.
  */
 public class MatchLink implements CustomModel {
+    // TODO: Create a Factory class and 4 MatchLink subclasses.
     public enum LinkType {
-        BROWSER("browser"), SOPCAST("sopcast"), ACESTREAM("acestream"), OTHER("other");
+        BROWSER("browser", "/webplayer.php", "/webplayer2.php"),
+        SOPCAST("sopcast", "sopcast"),
+        ACESTREAM("acestream", "acestream"),
+        OTHER("other");
 
         private String id;
+        private String[] contains;
 
-        LinkType(String id) {
+        LinkType(String id, String... contains) {
             this.id = id;
+            this.contains = contains;
         }
 
         public String getId() {
             return id;
+        }
+
+        static LinkType getLinkType(String link) {
+            for (LinkType lt : LinkType.values()) {
+                if (lt.contains != null && lt.contains.length > 0) {
+                    for (String text : lt.contains) {
+                        if (link.contains(text)) {
+                            return lt;
+                        }
+                    }
+                }
+            }
+
+            return LinkType.OTHER;
         }
     }
 
@@ -29,11 +49,7 @@ public class MatchLink implements CustomModel {
         this.language = language;
         this.link = link;
         this.bitRate = bitRate;
-
-        if (link.contains("sopcast")) linkType = LinkType.SOPCAST;
-        else if (link.contains("acestream")) linkType = LinkType.ACESTREAM;
-        else if (link.contains("/webplayer.php") || link.contains("/webplayer2.php")) linkType = LinkType.BROWSER;
-        else linkType = LinkType.OTHER;
+        this.linkType = LinkType.getLinkType(link);
     }
 
     public LinkType getLinkType() {
