@@ -25,16 +25,23 @@ public class MatchLink implements CustomModel {
 
         static LinkType getLinkType(String link) {
             for (LinkType lt : LinkType.values()) {
-                if (lt.contains != null && lt.contains.length > 0) {
-                    for (String text : lt.contains) {
-                        if (link.contains(text)) {
-                            return lt;
-                        }
-                    }
-                }
+                if (lt.isReferencedIn(link))
+                    return lt;
             }
 
             return LinkType.OTHER;
+        }
+        
+        private boolean isReferencedIn(String link) {
+            if (contains == null)
+                return false;
+            
+            for (String text : contains) {
+                if (link.contains(text)) 
+                    return true;
+            }
+            
+            return false;
         }
     }
 
