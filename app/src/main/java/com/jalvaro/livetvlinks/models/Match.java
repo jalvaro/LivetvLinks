@@ -2,27 +2,28 @@ package com.jalvaro.livetvlinks.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.jalvaro.livetvlinks.models.matchlinks.LinkType;
+import com.jalvaro.livetvlinks.models.matchlinks.MatchLink;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by jordi on 30/9/16.
- */
+
 public class Match implements CustomModel, Parcelable {
     private String iconUrl;
     private String name;
     private String time;
     private String matchUrl;
-    private Map<MatchLink.LinkType, List<MatchLink>> matchLinks;
+    private Map<LinkType, List<MatchLink>> matchLinksMap;
 
     public Match(String iconUrl, String name, String time, String matchUrl) {
         this.iconUrl = iconUrl;
         this.name = name;
         this.time = time;
         this.matchUrl = matchUrl;
-        matchLinks = new HashMap<>();
+        matchLinksMap = new HashMap<>();
     }
 
     protected Match(Parcel in) {
@@ -30,7 +31,7 @@ public class Match implements CustomModel, Parcelable {
         name = in.readString();
         time = in.readString();
         matchUrl = in.readString();
-        matchLinks = new HashMap<>();
+        matchLinksMap = new HashMap<>();
     }
 
     public static final Creator<Match> CREATOR = new Creator<Match>() {
@@ -61,25 +62,32 @@ public class Match implements CustomModel, Parcelable {
         return matchUrl;
     }
 
-    public void setMatchLinksGroup(MatchLink.LinkType linkType, List<MatchLink> links) {
-        matchLinks.put(linkType, links);
+    public void addMatchLink(MatchLink matchLink) {
+        List<MatchLink> list = matchLinksMap.get(matchLink.getLinkType());
+        if (list == null) {
+            list = new ArrayList<>();
+            matchLinksMap.put(matchLink.getLinkType(), list);
+        }
+
+        list.add(matchLink);
     }
 
-    public List<MatchLink> getMatchLinksGroup(MatchLink.LinkType linkType) {
-        return matchLinks.get(linkType);
+    public void addMatchLinks(List<MatchLink> links) {
+        for (MatchLink matchLink : links){
+            addMatchLink(matchLink);
+        }
     }
 
-    public int getMatchLinkGroupsCount() {
-        return matchLinks.size();
+    public void setMatchLinksGroup(LinkType linkType, List<MatchLink> links) {
+        matchLinksMap.put(linkType, links);
     }
 
-    public Map<MatchLink.LinkType, List<MatchLink>> getMatchLinks() {
-        return matchLinks;
+    public List<MatchLink> getMatchLinksGroup(LinkType linkType) {
+        return matchLinksMap.get(linkType);
     }
 
-
-    public MatchLink.LinkType[] getTypeLinks() {
-        return matchLinks.keySet().toArray(new MatchLink.LinkType[matchLinks.size()]);
+    public LinkType[] getLinkTypes() {
+        return matchLinksMap.keySet().toArray(new LinkType[matchLinksMap.size()]);
     }
 
     @Override

@@ -9,7 +9,7 @@ import com.jalvaro.livetvlinks.R;
 import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
 import com.jalvaro.livetvlinks.models.Match;
-import com.jalvaro.livetvlinks.models.MatchLink;
+import com.jalvaro.livetvlinks.models.matchlinks.MatchLink;
 
 import java.util.Calendar;
 import java.util.List;
@@ -22,7 +22,7 @@ public class MatchActivity extends AppCompatActivity {
     private Calendar lastUpdate;
     private Match match;
 
-    static final String MATCH_EXTRA = "match";
+    public static final String MATCH_EXTRA = "match";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +68,7 @@ public class MatchActivity extends AppCompatActivity {
         @Override
         public void processHtml(String html) {
             List<MatchLink> matchLinks = UrlDataFetcher.parseMatchHtml(html);
-
-            for (MatchLink.LinkType linkType : MatchLink.LinkType.values()) {
-                List<MatchLink> filtered = Utils.filter(matchLinks, linkType);
-                if (filtered.size() > 0) match.setMatchLinksGroup(linkType, filtered);
-            }
-
+            match.addMatchLinks(matchLinks);
             showMatchLinks();
         }
 

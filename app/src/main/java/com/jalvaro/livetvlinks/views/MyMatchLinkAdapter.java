@@ -7,11 +7,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 import com.jalvaro.livetvlinks.R;
 import com.jalvaro.livetvlinks.models.Match;
-import com.jalvaro.livetvlinks.models.MatchLink;
+import com.jalvaro.livetvlinks.models.matchlinks.LinkType;
+import com.jalvaro.livetvlinks.models.matchlinks.MatchLink;
 
-/**
- * Created by jordi on 2/10/16.
- */
 class MyMatchLinkAdapter extends BaseExpandableListAdapter {
     private Activity context;
     private Match match;
@@ -23,16 +21,16 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return match.getTypeLinks().length;
+        return match.getLinkTypes().length;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return match.getMatchLinksGroup(getGroupPosition(groupPosition)).size();
+        return match.getMatchLinksGroup(getLinkTypeByGroupPosition(groupPosition)).size();
     }
 
-    private MatchLink.LinkType getGroupPosition(int groupPosition) {
-        return match.getTypeLinks()[groupPosition];
+    private LinkType getLinkTypeByGroupPosition(int groupPosition) {
+        return match.getLinkTypes()[groupPosition];
     }
 
     @Override
@@ -69,7 +67,7 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
                     .inflate(R.layout.layout_item, null, false);
         }
 
-        MatchLink.LinkType linkType = getGroupPosition(groupPosition);
+        LinkType linkType = getLinkTypeByGroupPosition(groupPosition);
         ((TextView) convertView.findViewById(R.id.matchText)).setText(linkType.getId());
         ((TextView) convertView.findViewById(R.id.timeText)).setText("");
 
@@ -85,10 +83,10 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
                     .inflate(R.layout.layout_item, null, false);
         }
 
-        MatchLink.LinkType linkType = getGroupPosition(groupPosition);
+        LinkType linkType = getLinkTypeByGroupPosition(groupPosition);
         MatchLink matchLink = match.getMatchLinksGroup(linkType).get(childPosition);
 
-        ((TextView) convertView.findViewById(R.id.matchText)).setText(matchLink.getLink());
+        ((TextView) convertView.findViewById(R.id.matchText)).setText(matchLink.getId());
         ((TextView) convertView.findViewById(R.id.timeText)).setText(matchLink.getLanguage());
 
         return convertView;

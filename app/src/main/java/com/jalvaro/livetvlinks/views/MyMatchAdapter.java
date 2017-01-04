@@ -14,9 +14,6 @@ import java.util.List;
 
 import static com.jalvaro.livetvlinks.views.MatchActivity.MATCH_EXTRA;
 
-/**
- * Created by jordi on 2/10/16.
- */
 class MyMatchAdapter extends BaseAdapter{
     private Activity context;
     private List<Match> matches;

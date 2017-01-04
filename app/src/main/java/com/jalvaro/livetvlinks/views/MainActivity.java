@@ -9,7 +9,6 @@ import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
 import com.jalvaro.livetvlinks.models.Match;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView list;
     private MyMatchAdapter adapter;
     private Calendar lastUpdate;
-    private boolean test;
+    private List<Match> matches;
 
     /**
      * TODO:
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showMatches(List<Match> matches) {
+    private void showMatches() {
         if (adapter == null) {
             adapter = new MyMatchAdapter(this, matches);
             list.setAdapter(adapter);
@@ -70,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void processHtml(String html) {
-            showMatches(UrlDataFetcher.parseBaseHtml(html));
+            matches = UrlDataFetcher.parseBaseHtml(html);
+            showMatches();
         }
 
         @Override

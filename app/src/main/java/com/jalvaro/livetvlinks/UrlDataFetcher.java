@@ -1,7 +1,8 @@
 package com.jalvaro.livetvlinks;
 
 import com.jalvaro.livetvlinks.models.Match;
-import com.jalvaro.livetvlinks.models.MatchLink;
+import com.jalvaro.livetvlinks.models.matchlinks.MatchLink;
+import com.jalvaro.livetvlinks.models.matchlinks.MatchLinkFactory;
 import com.jalvaro.livetvlinks.views.UrlCallback;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,9 +16,7 @@ import rx.schedulers.Schedulers;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by jordi on 2/10/16.
- */
+
 public class UrlDataFetcher {
 
     public static void fetchFromUrl(final String url, final UrlCallback urlCallback) {
@@ -80,13 +79,14 @@ public class UrlDataFetcher {
 
         for (Element table : tables) {
             Elements as = table.select("a");
+            String url;
             if (as.size() > 1) {
-                String url = as.get(1).attr("href");
-                links.add(new MatchLink(0, "", url, 0));
+                url = as.get(1).attr("href");
             } else {
-                String url = as.first().attr("href");
-                links.add(new MatchLink(0, "", url, 0));
+                url = as.first().attr("href");
             }
+
+            links.add(MatchLinkFactory.getMatchLink(0, "", url, 0));
             //Integer bitRate = Integer.valueOf(table.select("").text());
         }
 
