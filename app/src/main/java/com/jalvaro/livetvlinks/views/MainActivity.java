@@ -25,9 +25,7 @@ public class MainActivity extends AppCompatActivity {
      * TODO:
      * que es pugui actualitzar quan l'usuari vulgui
      * cercador?
-     * Obtenir la web en el Locale del mòbil
      * Controlar si els links amagats es mostren
-     * Strings en idiomes
      * Visualment més agradable
      *
      * @param savedInstanceState
