@@ -2,6 +2,7 @@ package com.jalvaro.livetvlinks.views;
 
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
@@ -16,7 +17,6 @@ import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
 import com.jalvaro.livetvlinks.models.Match;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,13 +25,13 @@ import static com.jalvaro.livetvlinks.Utils.filter;
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private ListView list;
     private TextView infoText;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private MyMatchAdapter adapter;
     private Calendar lastUpdate;
     private List<Match> matches;
 
     /**
      * TODO:
-     * que es pugui actualitzar quan l'usuari vulgui
      * Controlar si els links amagats es mostren
      * Visualment més agradable
      *
@@ -46,6 +46,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         infoText = (TextView) findViewById(R.id.infoText);
         infoText.setVisibility(View.GONE);
         list = (ListView) findViewById(R.id.upcomingList);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshMatches);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchMatches();
+            }
+        });
     }
 
     @Override
@@ -78,9 +86,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onStart();
 
         if(Utils.needsTobeRefreshed(lastUpdate)) {
-            lastUpdate = Calendar.getInstance();
-            UrlDataFetcher.fetchFromLiveTv(new BaseUrlCallback());
+            fetchMatches();
         }
+    }
+
+    private void fetchMatches() {
+        swipeRefreshLayout.setRefreshing(true);
+        lastUpdate = Calendar.getInstance();
+        UrlDataFetcher.fetchFromLiveTv(new BaseUrlCallback());
     }
 
     private void showMatches() {
@@ -106,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void showInfoText(int resId) {
+        swipeRefreshLayout.setRefreshing(false);
+
         if (matches.isEmpty()) {
             infoText.setVisibility(View.VISIBLE);
             infoText.setText(resId);

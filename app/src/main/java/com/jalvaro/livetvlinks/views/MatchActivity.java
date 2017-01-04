@@ -1,6 +1,7 @@
 package com.jalvaro.livetvlinks.views;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -19,6 +20,7 @@ public class MatchActivity extends AppCompatActivity {
     private MyMatchLinkAdapter adapter;
     private ExpandableListView expList;
     private TextView infoText;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private Calendar lastUpdate;
     private Match match;
 
@@ -37,8 +39,14 @@ public class MatchActivity extends AppCompatActivity {
         infoText.setVisibility(View.GONE);
         expList = (ExpandableListView) findViewById(R.id.expandableListView);
 
-        lastUpdate = Calendar.getInstance();
-        UrlDataFetcher.fetchFromLiveTv(match, new MatchUrlCallback());
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLinks);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchLinks();
+            }
+        });
     }
 
     @Override
@@ -46,9 +54,14 @@ public class MatchActivity extends AppCompatActivity {
         super.onStart();
 
         if(Utils.needsTobeRefreshed(lastUpdate) && match != null) {
-            lastUpdate = Calendar.getInstance();
-            UrlDataFetcher.fetchFromLiveTv(match, new MatchUrlCallback());
+            fetchLinks();
         }
+    }
+
+    private void fetchLinks() {
+        swipeRefreshLayout.setRefreshing(true);
+        lastUpdate = Calendar.getInstance();
+        UrlDataFetcher.fetchFromLiveTv(match, new MatchUrlCallback());
     }
 
     private void showMatchLinks() {
@@ -70,6 +83,8 @@ public class MatchActivity extends AppCompatActivity {
     }
 
     private void showInfoText(int resId) {
+        swipeRefreshLayout.setRefreshing(false);
+
         if (!match.hasLinks()) {
             infoText.setVisibility(View.VISIBLE);
             infoText.setText(resId);

@@ -32,9 +32,16 @@
                 android:text="Large Text"
                 android:id="@+id/infoMatchText"
                 android:layout_centerInParent="true"/>
-        <ExpandableListView
+
+        <android.support.v4.widget.SwipeRefreshLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/swipeRefreshLinks"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/expandableListView"/>
+                android:layout_height="match_parent">
+            <ExpandableListView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/expandableListView"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 </LinearLayout>
