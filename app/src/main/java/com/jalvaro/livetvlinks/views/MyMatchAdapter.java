@@ -48,7 +48,7 @@ class MyMatchAdapter extends BaseAdapter{
                     .inflate(R.layout.layout_item, null, false);
         }
 
-        Match match = matches.get(position);
+        final Match match = matches.get(position);
 
         ((TextView) convertView.findViewById(R.id.matchText)).setText(match.getName());
         ((TextView) convertView.findViewById(R.id.timeText)).setText(match.getTime());
@@ -56,15 +56,15 @@ class MyMatchAdapter extends BaseAdapter{
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickItem(position);
+                onClickItem(match);
             }
         });
 
         return convertView;
     }
 
-    private void onClickItem(int position) {
-        startMatchActivity(context, matches.get(position));
+    private void onClickItem(Match match) {
+        startMatchActivity(context, match);
     }
 
     void setMatches(List<Match> matches) {

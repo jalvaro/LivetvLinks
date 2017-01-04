@@ -15,8 +15,6 @@ import static com.jalvaro.livetvlinks.views.MatchActivity.MATCH_EXTRA;
 
 
 public class Utils {
-    public static final String LIVETV_BASE_URL = "http://livetv.sx/";
-    public static final String LIVETV_URL = LIVETV_BASE_URL + "es/";
     private static final int SECONDS = 30;
     private static final int MINUTES = 5;
 

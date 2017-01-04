@@ -18,6 +18,16 @@ import java.util.List;
 
 
 public class UrlDataFetcher {
+    private static final String LIVETV_BASE_URL = "http://livetv.sx/";
+    private static final String LIVETV_URL = LIVETV_BASE_URL + "en/";
+
+    public static void fetchFromLiveTv(Match match, UrlCallback urlCallback) {
+        fetchFromUrl(LIVETV_BASE_URL + match.getMatchUrl(), urlCallback);
+    }
+
+    public static void fetchFromLiveTv(UrlCallback urlCallback) {
+        fetchFromUrl(LIVETV_URL, urlCallback);
+    }
 
     public static void fetchFromUrl(final String url, final UrlCallback urlCallback) {
         Observable<String> observable = Observable.create(new Observable.OnSubscribe<String>() {

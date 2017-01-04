@@ -144,4 +144,8 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
             }
         });
     }
+
+    public void setMatch(Match match) {
+        this.match = match;
+    }
 }

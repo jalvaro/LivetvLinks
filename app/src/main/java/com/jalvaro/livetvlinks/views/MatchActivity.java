@@ -15,8 +15,6 @@ import com.jalvaro.livetvlinks.models.matchlinks.MatchLink;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.jalvaro.livetvlinks.Utils.LIVETV_BASE_URL;
-
 public class MatchActivity extends AppCompatActivity {
     private MyMatchLinkAdapter adapter;
     private ExpandableListView expList;
@@ -40,7 +38,7 @@ public class MatchActivity extends AppCompatActivity {
         expList = (ExpandableListView) findViewById(R.id.expandableListView);
 
         lastUpdate = Calendar.getInstance();
-        UrlDataFetcher.fetchFromUrl(LIVETV_BASE_URL + match.getMatchUrl(), new MatchUrlCallback());
+        UrlDataFetcher.fetchFromLiveTv(match, new MatchUrlCallback());
     }
 
     @Override
@@ -49,7 +47,7 @@ public class MatchActivity extends AppCompatActivity {
 
         if(Utils.needsTobeRefreshed(lastUpdate) && match != null) {
             lastUpdate = Calendar.getInstance();
-            finish();
+            UrlDataFetcher.fetchFromLiveTv(match, new MatchUrlCallback());
         }
     }
 
@@ -59,8 +57,9 @@ public class MatchActivity extends AppCompatActivity {
         if (adapter == null) {
             adapter = new MyMatchLinkAdapter(this, match);
             expList.setAdapter(adapter);
-        } else {
-            //TODO: update
+        }  else {
+            adapter.setMatch(match);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -84,7 +83,7 @@ public class MatchActivity extends AppCompatActivity {
         @Override
         public void processHtml(String html) {
             List<MatchLink> matchLinks = UrlDataFetcher.parseMatchHtml(html);
-            match.addMatchLinks(matchLinks);
+            match.setMatchLinks(matchLinks);
             showMatchLinks();
         }
 

@@ -14,8 +14,6 @@ import com.jalvaro.livetvlinks.models.Match;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.jalvaro.livetvlinks.Utils.LIVETV_URL;
-
 public class MainActivity extends AppCompatActivity {
     private ListView list;
     private TextView infoText;
@@ -30,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
      * Obtenir la web en el Locale del mòbil
      * Controlar si els links amagats es mostren
      * Strings en idiomes
-     * Que es pugui copiar els links de sopcast, acestream...
      * Visualment més agradable
      *
      * @param savedInstanceState
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(Utils.needsTobeRefreshed(lastUpdate)) {
             lastUpdate = Calendar.getInstance();
-            UrlDataFetcher.fetchFromUrl(LIVETV_URL, new BaseUrlCallback());
+            UrlDataFetcher.fetchFromLiveTv(new BaseUrlCallback());
         }
     }
 

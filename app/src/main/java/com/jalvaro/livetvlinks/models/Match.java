@@ -62,7 +62,7 @@ public class Match implements CustomModel, Parcelable {
         return matchUrl;
     }
 
-    public void addMatchLink(MatchLink matchLink) {
+    private void addMatchLink(MatchLink matchLink) {
         List<MatchLink> list = matchLinksMap.get(matchLink.getLinkType());
         if (list == null) {
             list = new ArrayList<>();
@@ -72,7 +72,8 @@ public class Match implements CustomModel, Parcelable {
         list.add(matchLink);
     }
 
-    public void addMatchLinks(List<MatchLink> links) {
+    public void setMatchLinks(List<MatchLink> links) {
+        matchLinksMap = new HashMap<>();
         for (MatchLink matchLink : links){
             addMatchLink(matchLink);
         }
