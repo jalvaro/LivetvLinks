@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">LivetvLinks</string>
+    <string name="link_copied">Link copied.</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.jalvaro.livetvlinks.views;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import com.jalvaro.livetvlinks.models.Match;
 
 import java.util.List;
 
-import static com.jalvaro.livetvlinks.views.MatchActivity.MATCH_EXTRA;
+import static com.jalvaro.livetvlinks.Utils.startMatchActivity;
 
 class MyMatchAdapter extends BaseAdapter{
     private Activity context;
@@ -65,9 +64,7 @@ class MyMatchAdapter extends BaseAdapter{
     }
 
     private void onClickItem(int position) {
-        Intent intent = new Intent(context, MatchActivity.class);
-        intent.putExtra(MATCH_EXTRA, matches.get(position));
-        context.startActivity(intent);
+        startMatchActivity(context, matches.get(position));
     }
 
     void setMatches(List<Match> matches) {
