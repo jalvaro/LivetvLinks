@@ -4,4 +4,5 @@
     <string name="link_copied">Enllaç copiat.</string>
     <string name="loading">Carregant...</string>
     <string name="server_error">Error de la web livetv.sx. Intenti-ho un altre cop.</string>
+    <string name="action_search">Cerca</string>
 </resources>

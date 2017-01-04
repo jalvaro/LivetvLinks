@@ -1,7 +1,12 @@
 package com.jalvaro.livetvlinks.views;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -11,10 +16,13 @@ import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
 import com.jalvaro.livetvlinks.models.Match;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+import static com.jalvaro.livetvlinks.Utils.filter;
+
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private ListView list;
     private TextView infoText;
     private MyMatchAdapter adapter;
@@ -24,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * TODO:
      * que es pugui actualitzar quan l'usuari vulgui
-     * cercador?
      * Controlar si els links amagats es mostren
      * Visualment més agradable
      *
@@ -42,6 +49,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+        final MenuItem item = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setOnQueryTextListener(this);
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        final List<Match> filteredMatches = filter(matches, newText);
+
+        showMatches(filteredMatches);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
 
@@ -52,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showMatches() {
+        showMatches(matches);
+    }
+
+    private void showMatches(List<Match> matches) {
         showInfoText(R.string.empty_results);
 
         if (adapter == null) {

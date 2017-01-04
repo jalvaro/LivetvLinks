@@ -3,4 +3,5 @@
     <string name="link_copied">Enlace copiado.</string>
     <string name="loading">Cargando...</string>
     <string name="server_error">Error de la web livetv.sx. Inténtalo de nuevo.</string>
+    <string name="action_search">Búsqueda</string>
 </resources>

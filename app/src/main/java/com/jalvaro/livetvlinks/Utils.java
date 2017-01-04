@@ -9,7 +9,9 @@ import android.widget.Toast;
 import com.jalvaro.livetvlinks.models.Match;
 import com.jalvaro.livetvlinks.views.MatchActivity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import static com.jalvaro.livetvlinks.views.MatchActivity.MATCH_EXTRA;
 
@@ -31,6 +33,20 @@ public class Utils {
         ClipData clip = ClipData.newPlainText("test", text);
         clipboard.setPrimaryClip(clip);
         Toast.makeText(context, R.string.link_copied, Toast.LENGTH_LONG).show();
+    }
+
+    public static List<Match> filter(List<Match> matches, String query) {
+        query = query.toLowerCase();
+        List<Match> filteredModelList = new ArrayList<>();
+
+        for (Match match : matches) {
+            String text = match.getName().toLowerCase();
+            if (text.contains(query)) {
+                filteredModelList.add(match);
+            }
+        }
+
+        return filteredModelList;
     }
 
     public static void startMatchActivity(Context context, Match match) {
