@@ -2,10 +2,10 @@ package com.jalvaro.livetvlinks.models.matchlinks;
 
 
 public enum LinkType {
-    BROWSER("browser", "/webplayer.php", "/webplayer2.php"),
-    SOPCAST("sopcast", "sopcast"),
-    ACESTREAM("acestream", "acestream"),
-    OTHER("other");
+    BROWSER("Browser", "/webplayer.php", "/webplayer2.php"),
+    SOPCAST("Sopcast", "sopcast"),
+    ACESTREAM("Acestream", "acestream"),
+    OTHER("Other");
 
     private String id;
     private String[] urlPatterns;

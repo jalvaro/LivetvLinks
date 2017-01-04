@@ -66,12 +66,17 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
+    public boolean areAllItemsEnabled() {
+        return true;
+    }
+
+    @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         // Inflate only once
         if(convertView == null) {
             convertView = context.getLayoutInflater()
-                    .inflate(R.layout.layout_item, null, false);
+                    .inflate(R.layout.layout_link_group, null, false);
         }
 
         LinkType linkType = getLinkTypeByGroupPosition(groupPosition);
@@ -98,7 +103,7 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
     private void openExternalApp(MatchLink matchLink) {
@@ -111,11 +116,7 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
     }
 
     private void populateGroupView(View view, LinkType linkType) {
-        ((TextView) view.findViewById(R.id.matchText)).setText(linkType.getId());
-        ((TextView) view.findViewById(R.id.timeText)).setText("");
-        view.findViewById(R.id.iconImage).setVisibility(View.GONE);
-        ImageView openLinkIcon = (ImageView) view.findViewById(R.id.openLink);
-        openLinkIcon.setVisibility(View.GONE);
+        ((TextView) view.findViewById(R.id.groupNameText)).setText(linkType.getId());
     }
 
     private void populateItemView(View view, final MatchLink matchLink) {
@@ -154,7 +155,7 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
         });
     }
 
-    public void setMatch(Match match) {
+    void setMatch(Match match) {
         this.match = match;
     }
 }

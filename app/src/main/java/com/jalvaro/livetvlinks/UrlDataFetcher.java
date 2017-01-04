@@ -15,23 +15,37 @@ import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class UrlDataFetcher {
     private static final String LIVETV_BASE_URL = "http://livetv.sx/";
-    private static final String LIVETV_URL = LIVETV_BASE_URL + "en/";
+    private enum Country {
+        BG, DE, EN, ES, FR, IT, PL, PT, RU, RS, TR, UA;
+
+        static Country getCountry(String code) {
+            for (Country country: Country.values()) {
+                if (country.name().equals(code))
+                    return country;
+            }
+            return EN;
+        }
+    }
 
     public static void fetchFromLiveTv(Match match, UrlCallback urlCallback) {
         fetchFromUrl(LIVETV_BASE_URL + match.getMatchUrl(), urlCallback);
     }
 
     public static void fetchFromLiveTv(UrlCallback urlCallback) {
-        fetchFromUrl(LIVETV_URL, urlCallback);
+        String code = Locale.getDefault().getCountry();
+        String url = LIVETV_BASE_URL + Country.getCountry(code).name().toLowerCase() + "/";
+
+        fetchFromUrl(url, urlCallback);
     }
 
-    public static void fetchFromUrl(final String url, final UrlCallback urlCallback) {
+    private static void fetchFromUrl(final String url, final UrlCallback urlCallback) {
         Observable<String> observable = Observable.create(new Observable.OnSubscribe<String>() {
             @Override
             public void call(Subscriber<? super String> subscriber) {
