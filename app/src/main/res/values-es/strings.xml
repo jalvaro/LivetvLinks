@@ -4,4 +4,8 @@
     <string name="loading">Cargando...</string>
     <string name="server_error">Error de la web livetv.sx. Inténtalo de nuevo.</string>
     <string name="action_search">Búsqueda</string>
+    <string name="acestream">Enlaces Ace Stream</string>
+    <string name="sopcast">Enlaces SopCast</string>
+    <string name="other">Otros enlaces</string>
+    <string name="browser">Enlaces al navegador</string>
 </resources>

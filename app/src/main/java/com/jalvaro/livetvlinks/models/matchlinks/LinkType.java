@@ -1,22 +1,30 @@
 package com.jalvaro.livetvlinks.models.matchlinks;
 
 
-public enum LinkType {
-    BROWSER("Browser", "/webplayer.php", "/webplayer2.php"),
-    SOPCAST("Sopcast", "sopcast"),
-    ACESTREAM("Acestream", "acestream"),
-    OTHER("Other");
+import com.jalvaro.livetvlinks.R;
 
-    private String id;
+public enum LinkType {
+    BROWSER(R.mipmap.chrome, R.string.browser, "/webplayer.php", "/webplayer2.php"),
+    SOPCAST(R.mipmap.sopcast, R.string.sopcast, "sopcast"),
+    ACESTREAM(R.mipmap.acestream, R.string.acestream, "acestream"),
+    OTHER(R.mipmap.chrome, R.string.other);
+
+    private int resImageId;
+    private int resTextId;
     private String[] urlPatterns;
 
-    LinkType(String id, String... urlPatterns) {
-        this.id = id;
+    LinkType(int resImageId, int resTextId, String... urlPatterns) {
+        this.resImageId = resImageId;
+        this.resTextId = resTextId;
         this.urlPatterns = urlPatterns;
     }
 
-    public String getId() {
-        return id;
+    public int getResTextId() {
+        return resTextId;
+    }
+
+    public int getResImageId() {
+        return resImageId;
     }
 
     static LinkType getLinkType(String link) {

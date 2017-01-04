@@ -5,4 +5,8 @@
     <string name="loading">Loading...</string>
     <string name="server_error">Error from livetv.sx. Try it again.</string>
     <string name="action_search">Search</string>
+    <string name="sopcast">SopCast links</string>
+    <string name="acestream">Ace Stream links</string>
+    <string name="other">Other links</string>
+    <string name="browser">Browser links</string>
 </resources>

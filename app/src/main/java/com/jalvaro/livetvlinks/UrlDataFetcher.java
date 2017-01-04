@@ -30,6 +30,10 @@ public class UrlDataFetcher {
                 if (country.name().equals(code))
                     return country;
             }
+            return null;
+        }
+
+        static Country getDefault() {
             return EN;
         }
     }
@@ -39,10 +43,27 @@ public class UrlDataFetcher {
     }
 
     public static void fetchFromLiveTv(UrlCallback urlCallback) {
-        String code = Locale.getDefault().getCountry();
-        String url = LIVETV_BASE_URL + Country.getCountry(code).name().toLowerCase() + "/";
+        Country country = getLocaleCountry();
+
+        String url = LIVETV_BASE_URL + country.name().toLowerCase() + "/";
 
         fetchFromUrl(url, urlCallback);
+    }
+
+    private static Country getLocaleCountry() {
+        String code = Locale.getDefault().getCountry();
+        Country country = Country.getCountry(code);
+
+        if (country != null)
+            return country;
+
+        code = Locale.getDefault().getLanguage();
+        country = Country.getCountry(code);
+
+        if (country != null)
+            return country;
+
+        return Country.getDefault();
     }
 
     private static void fetchFromUrl(final String url, final UrlCallback urlCallback) {

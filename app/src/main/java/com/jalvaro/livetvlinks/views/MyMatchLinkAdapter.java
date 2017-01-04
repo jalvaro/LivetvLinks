@@ -116,7 +116,8 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
     }
 
     private void populateGroupView(View view, LinkType linkType) {
-        ((TextView) view.findViewById(R.id.groupNameText)).setText(linkType.getId());
+        ((TextView) view.findViewById(R.id.groupNameText)).setText(linkType.getResTextId());
+        ((ImageView) view.findViewById(R.id.groupLinkImage)).setImageResource(linkType.getResImageId());
     }
 
     private void populateItemView(View view, final MatchLink matchLink) {
@@ -133,9 +134,9 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
         openLinkIcon.setVisibility(View.VISIBLE);
 
         if (matchLink.getOpenLink() == PLEXUS) {
-            openLinkIcon.setImageResource(R.mipmap.kore);
+            openLinkIcon.setImageResource(R.mipmap.kore2);
         } else {
-            openLinkIcon.setImageResource(android.R.drawable.ic_menu_send);
+            openLinkIcon.setImageResource(R.mipmap.webtv2);
         }
 
         view.setOnClickListener(new View.OnClickListener() {
