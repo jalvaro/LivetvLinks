@@ -24,7 +24,7 @@ public class UrlDataFetcher {
             @Override
             public void call(Subscriber<? super String> subscriber) {
                 try {
-                    String data = Jsoup.connect(url).get().html();
+                    String data = Jsoup.connect(url).timeout(5000).get().html();
                     subscriber.onNext(data); // Emit the contents of the URL
                     subscriber.onCompleted(); // Nothing more to emit
                 }catch(Exception e){
@@ -47,7 +47,7 @@ public class UrlDataFetcher {
 
                     @Override
                     public void onError(Throwable e) {
-                        urlCallback.processError("Error de la web livetv.sx ");
+                        urlCallback.processError();
                     }
                 });
     }

@@ -22,8 +22,19 @@
             android:id="@+id/timeText"
             android:paddingBottom="20dp"/>
 
-    <ExpandableListView
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/expandableListView"/>
+            android:layout_height="match_parent">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/infoMatchText"
+                android:layout_centerInParent="true"/>
+        <ExpandableListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/expandableListView"/>
+    </RelativeLayout>
 </LinearLayout>

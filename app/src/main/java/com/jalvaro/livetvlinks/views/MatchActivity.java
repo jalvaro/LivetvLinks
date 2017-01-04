@@ -2,6 +2,7 @@ package com.jalvaro.livetvlinks.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import static com.jalvaro.livetvlinks.Utils.LIVETV_BASE_URL;
 public class MatchActivity extends AppCompatActivity {
     private MyMatchLinkAdapter adapter;
     private ExpandableListView expList;
+    private TextView infoText;
     private Calendar lastUpdate;
     private Match match;
 
@@ -33,6 +35,8 @@ public class MatchActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.matchText)).setText(match.getName());
         ((TextView)findViewById(R.id.timeText)).setText(match.getTime());
 
+        infoText = (TextView) findViewById(R.id.infoMatchText);
+        infoText.setVisibility(View.GONE);
         expList = (ExpandableListView) findViewById(R.id.expandableListView);
 
         lastUpdate = Calendar.getInstance();
@@ -50,6 +54,8 @@ public class MatchActivity extends AppCompatActivity {
     }
 
     private void showMatchLinks() {
+        showInfoText(R.string.empty_results);
+
         if (adapter == null) {
             adapter = new MyMatchLinkAdapter(this, match);
             expList.setAdapter(adapter);
@@ -58,10 +64,20 @@ public class MatchActivity extends AppCompatActivity {
         }
     }
 
-    private void showError(String error) {
+    private void showServerError() {
+        int error = R.string.server_error;
+        showInfoText(error);
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
     }
 
+    private void showInfoText(int resId) {
+        if (!match.hasLinks()) {
+            infoText.setVisibility(View.VISIBLE);
+            infoText.setText(resId);
+        } else {
+            infoText.setVisibility(View.GONE);
+        }
+    }
 
     private class MatchUrlCallback implements UrlCallback {
 
@@ -73,8 +89,8 @@ public class MatchActivity extends AppCompatActivity {
         }
 
         @Override
-        public void processError(String error) {
-            showError(error);
+        public void processError() {
+            showServerError();
         }
     }
 }

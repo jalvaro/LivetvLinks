@@ -2,7 +2,9 @@ package com.jalvaro.livetvlinks.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.jalvaro.livetvlinks.R;
 import com.jalvaro.livetvlinks.UrlDataFetcher;
@@ -16,6 +18,7 @@ import static com.jalvaro.livetvlinks.Utils.LIVETV_URL;
 
 public class MainActivity extends AppCompatActivity {
     private ListView list;
+    private TextView infoText;
     private MyMatchAdapter adapter;
     private Calendar lastUpdate;
     private List<Match> matches;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        infoText = (TextView) findViewById(R.id.infoText);
+        infoText.setVisibility(View.GONE);
         list = (ListView) findViewById(R.id.upcomingList);
     }
 
@@ -52,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showMatches() {
+        showInfoText(R.string.empty_results);
+
         if (adapter == null) {
             adapter = new MyMatchAdapter(this, matches);
             list.setAdapter(adapter);
@@ -61,8 +68,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void showError(String error) {
+    private void showServerError() {
+        int error = R.string.server_error;
+        showInfoText(error);
         Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+    }
+
+    private void showInfoText(int resId) {
+        if (matches.isEmpty()) {
+            infoText.setVisibility(View.VISIBLE);
+            infoText.setText(resId);
+        } else {
+            infoText.setVisibility(View.GONE);
+        }
     }
 
     private class BaseUrlCallback implements UrlCallback {
@@ -74,8 +92,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void processError(String error) {
-            showError(error);
+        public void processError() {
+            showServerError();
         }
     }
 }

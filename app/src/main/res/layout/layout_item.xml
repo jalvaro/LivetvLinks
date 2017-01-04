@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content" android:id="@+id/test">
+              android:layout_height="wrap_content">
 
 
     <ImageView
@@ -33,8 +33,11 @@
             android:layout_width="55dp"
             android:layout_height="50dp"
             android:id="@+id/openLink"
-            android:visibility="visible" android:src="@android:drawable/ic_menu_send"
-            android:layout_weight="1" android:paddingLeft="10dp" android:paddingRight="10dp"
+            android:visibility="visible"
+            android:src="@android:drawable/ic_menu_send"
+            android:layout_weight="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_gravity="center_vertical"/>
 
 </LinearLayout>

@@ -90,6 +90,10 @@ public class Match implements CustomModel, Parcelable {
         return matchLinksMap.keySet().toArray(new LinkType[matchLinksMap.size()]);
     }
 
+    public boolean hasLinks() {
+        return !matchLinksMap.isEmpty();
+    }
+
     @Override
     public int describeContents() {
         return 0;
