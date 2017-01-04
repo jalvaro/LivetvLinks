@@ -51,7 +51,17 @@
 
     <ImageView
             android:layout_height="50dp"
-            android:id="@+id/openLink"
+            android:id="@+id/openLink0"
+            android:visibility="visible"
+            android:src="@android:drawable/ic_menu_send"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="33dp"/>
+
+    <ImageView
+            android:layout_height="50dp"
+            android:id="@+id/openLink1"
             android:visibility="visible"
             android:src="@android:drawable/ic_menu_send"
             android:paddingLeft="10dp"

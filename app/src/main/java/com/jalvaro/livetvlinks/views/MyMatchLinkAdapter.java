@@ -13,8 +13,7 @@ import com.jalvaro.livetvlinks.models.matchlinks.LinkType;
 import com.jalvaro.livetvlinks.models.matchlinks.MatchLink;
 
 import static com.jalvaro.livetvlinks.Utils.*;
-import static com.jalvaro.livetvlinks.models.matchlinks.MatchLink.OpenLink.BROWSER;
-import static com.jalvaro.livetvlinks.models.matchlinks.MatchLink.OpenLink.PLEXUS;
+import static com.jalvaro.livetvlinks.models.matchlinks.LinkType.ExternalApp.BROWSER;
 
 
 class MyMatchLinkAdapter extends BaseExpandableListAdapter {
@@ -106,15 +105,6 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private void openExternalApp(MatchLink matchLink) {
-        copyOnClipboard(context, matchLink.getId());
-        if (matchLink.getOpenLink() == BROWSER) {
-            startExternalBrowser(context, matchLink.getId());
-        } else {
-            startNewExternalActivity(context, matchLink.getOpenLink().getPackageName());
-        }
-    }
-
     private void populateGroupView(View view, LinkType linkType) {
         ((TextView) view.findViewById(R.id.groupNameText)).setText(linkType.getResTextId());
         ((ImageView) view.findViewById(R.id.groupLinkImage)).setImageResource(linkType.getResImageId());
@@ -130,30 +120,50 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
         int resId = context.getResources().getIdentifier(matchLink.getLanguage(), "mipmap", context.getPackageName());
         ((ImageView) view.findViewById(R.id.iconImage)).setImageResource(resId);
 
-        ImageView openLinkIcon = (ImageView) view.findViewById(R.id.openLink);
-        openLinkIcon.setVisibility(View.VISIBLE);
+        populateExternalAppIcon(view, matchLink, 0);
 
-        if (matchLink.getOpenLink() == PLEXUS) {
-            openLinkIcon.setImageResource(R.mipmap.kore2);
+        if (matchLink.getLinkType().getExternalApps().length > 1) {
+            populateExternalAppIcon(view, matchLink, 1);
         } else {
-            openLinkIcon.setImageResource(R.mipmap.webtv2);
+            view.findViewById(R.id.openLink1).setVisibility(View.GONE);
         }
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openExternalApp(matchLink);
-            }
-        });
 
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                copyOnClipboard(context, matchLink.getId());
+                copyLinkOnClipboard(matchLink.getLink());
 
                 return true;
             }
         });
+    }
+
+    private void populateExternalAppIcon(View view, final MatchLink matchLink, final int posExtApp) {
+        final LinkType linkType = matchLink.getLinkType();
+
+        int resId = context.getResources().getIdentifier("openLink" + posExtApp, "id", context.getPackageName());
+        ImageView openLinkIcon = (ImageView) view.findViewById(resId);
+        openLinkIcon.setVisibility(View.VISIBLE);
+        openLinkIcon.setImageResource(linkType.getExternalApps()[posExtApp].getResImgId());
+        openLinkIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openExternalApp(matchLink.getLink(), linkType.getExternalApps()[posExtApp]);
+            }
+        });
+    }
+
+    private void openExternalApp(String link, LinkType.ExternalApp externalApp) {
+        copyLinkOnClipboard(link);
+        if (externalApp == BROWSER) {
+            startExternalBrowser(context, link);
+        } else {
+            startNewExternalActivity(context, externalApp);
+        }
+    }
+    
+    private void copyLinkOnClipboard(String toCopy) {
+        copyOnClipboard(context, toCopy);
     }
 
     void setMatch(Match match) {

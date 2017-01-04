@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 import com.jalvaro.livetvlinks.models.Match;
+import com.jalvaro.livetvlinks.models.matchlinks.LinkType;
 import com.jalvaro.livetvlinks.views.MatchActivity;
 
 import java.util.ArrayList;
@@ -53,11 +54,18 @@ public class Utils {
         context.startActivity(intent);
     }
 
-    public static void startNewExternalActivity(Context context, String packageName) {
+    public static void startNewExternalActivity(Context context, LinkType.ExternalApp externalApp) {
+        String packageName = externalApp.getPackageName();
         Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+
         if (intent == null) {
-            // Bring user to the market or let them choose an app?
-            startExternalBrowser(context, "market://details?id=" + packageName);
+            String uri;
+            if (externalApp.hasPlayStore())
+                uri = "market://details?id=" + packageName;
+            else
+                uri = externalApp.getWebsite();
+
+            startExternalBrowser(context, uri);
         } else {
             startActivity(context, intent);
         }

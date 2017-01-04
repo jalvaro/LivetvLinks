@@ -10,16 +10,14 @@ public abstract class MatchLink implements CustomModel {
     private String link;
     private String bitRate;
     private LinkType linkType;
-    private OpenLink openLink;
 
-    MatchLink(String rate, String rateColor, String language, String link, String bitRate, LinkType linkType, OpenLink openLink) {
+    MatchLink(String rate, String rateColor, String language, String link, String bitRate, LinkType linkType) {
         this.rate = rate;
         this.rateColor = rateColor;
         this.language = language;
         this.link = link;
         this.bitRate = bitRate;
         this.linkType = linkType;
-        this.openLink = openLink;
     }
 
     public String getRate() {
@@ -46,23 +44,5 @@ public abstract class MatchLink implements CustomModel {
         return linkType;
     }
 
-    public OpenLink getOpenLink() {
-        return openLink;
-    }
-
     public abstract String getId();
-
-    public enum OpenLink {
-        BROWSER(null), PLEXUS("org.xbmc.kore");
-
-        private String packageName;
-
-        OpenLink(String packageName) {
-            this.packageName = packageName;
-        }
-
-        public String getPackageName() {
-            return packageName;
-        }
-    }
 }
