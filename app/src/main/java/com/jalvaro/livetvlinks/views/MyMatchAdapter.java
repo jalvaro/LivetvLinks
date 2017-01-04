@@ -52,7 +52,8 @@ class MyMatchAdapter extends BaseAdapter{
 
         ((TextView) convertView.findViewById(R.id.matchText)).setText(match.getName());
         ((TextView) convertView.findViewById(R.id.timeText)).setText(match.getTime());
-        //((ImageView) convertView.findViewById(R.id.iconImage)).setImageResource(R.drawable.abc_ic_menu_cut_mtrl_alpha);
+        convertView.findViewById(R.id.iconImage).setVisibility(View.GONE);
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

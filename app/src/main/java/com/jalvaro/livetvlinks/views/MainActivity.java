@@ -30,14 +30,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private Calendar lastUpdate;
     private List<Match> matches;
 
-    /**
-     * TODO:
-     * Controlar si els links amagats es mostren
-     * Visualment més agradable
-     *
-     * @param savedInstanceState
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

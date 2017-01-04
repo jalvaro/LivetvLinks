@@ -1,6 +1,7 @@
 package com.jalvaro.livetvlinks.views;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -85,7 +86,7 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
         // Inflate only once
         if(convertView == null) {
             convertView = context.getLayoutInflater()
-                    .inflate(R.layout.layout_item, null, false);
+                    .inflate(R.layout.layout_link_item, null, false);
         }
 
         LinkType linkType = getLinkTypeByGroupPosition(groupPosition);
@@ -112,13 +113,21 @@ class MyMatchLinkAdapter extends BaseExpandableListAdapter {
     private void populateGroupView(View view, LinkType linkType) {
         ((TextView) view.findViewById(R.id.matchText)).setText(linkType.getId());
         ((TextView) view.findViewById(R.id.timeText)).setText("");
+        view.findViewById(R.id.iconImage).setVisibility(View.GONE);
         ImageView openLinkIcon = (ImageView) view.findViewById(R.id.openLink);
         openLinkIcon.setVisibility(View.GONE);
     }
 
     private void populateItemView(View view, final MatchLink matchLink) {
-        ((TextView) view.findViewById(R.id.matchText)).setText(matchLink.getId());
-        ((TextView) view.findViewById(R.id.timeText)).setText(matchLink.getLanguage());
+        ((TextView) view.findViewById(R.id.bitRateText)).setText(matchLink.getId());
+        ((TextView) view.findViewById(R.id.rateText)).setText(matchLink.getRate());
+
+        int color = Color.parseColor(matchLink.getRateColor());
+        view.findViewById(R.id.rateLayout).setBackgroundColor(color);
+
+        int resId = context.getResources().getIdentifier(matchLink.getLanguage(), "mipmap", context.getPackageName());
+        ((ImageView) view.findViewById(R.id.iconImage)).setImageResource(resId);
+
         ImageView openLinkIcon = (ImageView) view.findViewById(R.id.openLink);
         openLinkIcon.setVisibility(View.VISIBLE);
 

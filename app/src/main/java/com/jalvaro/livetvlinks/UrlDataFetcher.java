@@ -15,6 +15,8 @@ import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class UrlDataFetcher {
@@ -71,13 +73,26 @@ public class UrlDataFetcher {
         List<Match> matches = new ArrayList<>();
 
         for (Element table : tables) {
-            Element a = table.select("a").first();
-            Element desc = table.select("span.evdesc").first();
-            Element img = table.select("img").first();
-            matches.add(new Match(img.attr("src"), a.text(), desc.text(), a.attr("href")));
+            matches.add(new Match(getIconUrl(table), getName(table), getDesc(table), getMatchUrl(table)));
         }
 
         return matches;
+    }
+
+    private static String getIconUrl(Element table) {
+        return table.select("img").first().attr("src");
+    }
+
+    private static String getName(Element table) {
+        return table.select("a").first().text();
+    }
+
+    private static String getDesc(Element table) {
+        return table.select("span.evdesc").first().text();
+    }
+
+    private static String getMatchUrl(Element table) {
+        return table.select("a").first().attr("href");
     }
 
     public static List<MatchLink> parseMatchHtml(String html) {
@@ -88,18 +103,50 @@ public class UrlDataFetcher {
         Elements tables = doc.select("table.lnktbj");
 
         for (Element table : tables) {
-            Elements as = table.select("a");
-            String url;
-            if (as.size() > 1) {
-                url = as.get(1).attr("href");
-            } else {
-                url = as.first().attr("href");
-            }
-
-            links.add(MatchLinkFactory.getMatchLink(0, "", url, 0));
-            //Integer bitRate = Integer.valueOf(table.select("").text());
+            links.add(MatchLinkFactory.getMatchLink(getRate(table), getRateColor(table), getLanguage(table), getLink(table), getBitRate(table)));
         }
 
         return links;
+    }
+
+    private static String getRate(Element table) {
+        String rate = table.select("td.rate").select("div").first().text();
+        return rate.substring(1);
+    }
+
+    private static String getRateColor(Element table) {
+        String style = table.select("td.rate").select("div").first().attr("style");
+        Pattern pattern = Pattern.compile("background-color: (#[a-fA-F0-9]*);");
+        Matcher matcher = pattern.matcher(style);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return "";
+    }
+
+    private static String getLanguage(Element table) {
+        String url = table.select("img").first().attr("src");
+        Pattern pattern = Pattern.compile("/([0-9]*)\\.png");
+        Matcher matcher = pattern.matcher(url);
+
+        if (matcher.find()) {
+            return "lang_" + matcher.group(1);
+        }
+        return "";
+    }
+
+    private static String getLink(Element table) {
+        Elements as = table.select("a");
+
+        if (as.size() > 1) {
+            return as.get(1).attr("href");
+        }
+
+        return as.first().attr("href");
+    }
+
+    private static String getBitRate(Element table) {
+        return table.select("td.bitrate").first().text();
     }
 }

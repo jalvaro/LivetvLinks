@@ -4,15 +4,17 @@ import com.jalvaro.livetvlinks.models.CustomModel;
 
 
 public abstract class MatchLink implements CustomModel {
-    private int quality;
+    private String rate;
+    private String rateColor;
     private String language;
     private String link;
-    private int bitRate;
+    private String bitRate;
     private LinkType linkType;
     private OpenLink openLink;
 
-    MatchLink(int quality, String language, String link, int bitRate, LinkType linkType, OpenLink openLink) {
-        this.quality = quality;
+    MatchLink(String rate, String rateColor, String language, String link, String bitRate, LinkType linkType, OpenLink openLink) {
+        this.rate = rate;
+        this.rateColor = rateColor;
         this.language = language;
         this.link = link;
         this.bitRate = bitRate;
@@ -20,8 +22,12 @@ public abstract class MatchLink implements CustomModel {
         this.openLink = openLink;
     }
 
-    public int getQuality() {
-        return quality;
+    public String getRate() {
+        return rate;
+    }
+
+    public String getRateColor() {
+        return rateColor;
     }
 
     public String getLanguage() {
@@ -32,7 +38,7 @@ public abstract class MatchLink implements CustomModel {
         return link;
     }
 
-    public int getBitRate() {
+    public String getBitRate() {
         return bitRate;
     }
 

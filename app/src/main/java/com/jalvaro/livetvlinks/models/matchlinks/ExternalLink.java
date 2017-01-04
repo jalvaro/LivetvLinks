@@ -2,8 +2,8 @@ package com.jalvaro.livetvlinks.models.matchlinks;
 
 
 public abstract class ExternalLink extends MatchLink {
-    ExternalLink(int quality, String language, String link, int bitRate, LinkType linkType) {
-        super(quality, language, link, bitRate, linkType, OpenLink.BROWSER);
+    ExternalLink(String rate, String rateColor, String language, String link, String bitRate, LinkType linkType) {
+        super(rate, rateColor, language, link, bitRate, linkType, OpenLink.BROWSER);
     }
 
     @Override

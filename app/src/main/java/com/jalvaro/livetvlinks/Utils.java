@@ -17,13 +17,11 @@ import static com.jalvaro.livetvlinks.views.MatchActivity.MATCH_EXTRA;
 
 
 public class Utils {
-    private static final int SECONDS = 30;
-    private static final int MINUTES = 5;
+    private static final int MINUTES = 2;
 
     public static boolean needsTobeRefreshed(Calendar lastUpdate) {
         Calendar someMinutesAgo = Calendar.getInstance();
-        //someMinutesAgo.add(Calendar.MINUTE, -MINUTES);
-        someMinutesAgo.add(Calendar.SECOND, -SECONDS);
+        someMinutesAgo.add(Calendar.MINUTE, -MINUTES);
 
         return lastUpdate == null || lastUpdate.before(someMinutesAgo);
     }
