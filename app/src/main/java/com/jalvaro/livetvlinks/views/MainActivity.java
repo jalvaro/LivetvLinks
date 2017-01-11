@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private void showInfoText(int resId) {
         swipeRefreshLayout.setRefreshing(false);
 
-        if (matches.isEmpty()) {
+        if (matches == null || matches.isEmpty()) {
             infoText.setVisibility(View.VISIBLE);
             infoText.setText(resId);
         } else {
