@@ -8,8 +8,8 @@ android {
         applicationId "com.jalvaro.livetvlinks"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 7
-        versionName "2.0.2"
+        versionCode 8
+        versionName "2.0.3"
     }
     buildTypes {
         release {
