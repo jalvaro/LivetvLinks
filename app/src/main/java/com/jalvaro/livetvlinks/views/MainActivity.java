@@ -17,6 +17,7 @@ import com.jalvaro.livetvlinks.UrlDataFetcher;
 import com.jalvaro.livetvlinks.Utils;
 import com.jalvaro.livetvlinks.models.Match;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 fetchMatches();
             }
         });
+
+        matches = new ArrayList<>();
     }
 
     @Override
