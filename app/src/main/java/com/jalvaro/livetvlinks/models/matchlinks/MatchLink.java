@@ -2,6 +2,8 @@ package com.jalvaro.livetvlinks.models.matchlinks;
 
 import com.jalvaro.livetvlinks.models.CustomModel;
 
+import static com.jalvaro.livetvlinks.Utils.decorate;
+
 
 public abstract class MatchLink implements CustomModel {
     private String rate;
@@ -33,7 +35,7 @@ public abstract class MatchLink implements CustomModel {
     }
 
     public String getLink() {
-        return link;
+        return decorate(link);
     }
 
     public String getBitRate() {

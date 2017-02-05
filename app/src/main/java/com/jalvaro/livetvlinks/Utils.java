@@ -80,4 +80,17 @@ public class Utils {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
+
+    public static String decorate(String uri) {
+        // Well-formed URI
+        if (uri.startsWith("http://") || uri.startsWith("https://"))
+            return uri;
+
+        // Incomplete URI
+        if (uri.startsWith("//"))
+            return "http:" + uri;
+
+        // TODO: Handle other cases from Livetv (There are not any other cases by now)
+        return uri;
+    }
 }
